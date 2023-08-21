@@ -14,4 +14,3 @@ set gitConfigPath=%homedrive%%homepath%\.gitconfig
 echo [diff "gitExcel"] >> %gitConfigPath%
 set compareCMD=    command = %gitExcelBatchPath:\=/%
 echo %compareCMD% >> %gitConfigPath%
-echo *.xls* diff=gitExcel >> %gitPath%\.gitattributes
