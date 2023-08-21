@@ -10,9 +10,7 @@ mkdir %gitExcelFolder%
 copy /y %gitExcelBatchFile% %gitExcelBatchPath%
 
 echo "===========Injecting to .git/config ============="
-set /p gitPath=Enter Repository Path:-
-
-set gitConfigPath=%gitPath%\.git\config
+set gitConfigPath=%homedrive%%homepath%\.gitconfig
 echo [diff "gitExcel"] >> %gitConfigPath%
 set compareCMD=    command = %gitExcelBatchPath:\=/%
 echo %compareCMD% >> %gitConfigPath%
