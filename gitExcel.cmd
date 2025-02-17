@@ -49,7 +49,7 @@ DIR %file1:/=\% /B /S> %tempfile%
 DIR %file2:/=\% /B /S>> %tempfile%
 
 
-ECHO --Starting SpreadsheetCompare--
+ECHO --Starting SpreadsheetCompare
 %appVlpPath% %spreadsheetComparePath% %tempfile%
 timeout /t 5
 
