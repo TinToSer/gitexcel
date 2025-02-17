@@ -15,7 +15,7 @@ IF NOT EXIST "%gitAttrFile%" (
     ECHO ---.gitattributes file NOT found
     ECHO --Creating and configuring.gitattributes file
     ECHO %attrCmd% > "%gitAttrFile%"
-    GOTO waitAndExitSuccessful
+    GOTO :waitAndExitSuccessful
 )
 ECHO ---.gitattributes file found
 
@@ -31,7 +31,7 @@ FOR /F "delims=" %%a IN ('TYPE "%gitAttrFile%"') DO (
     IF NOT ERRORLEVEL 1 (
         ECHO ---gitattributes file already configured
         ENDLOCAL
-        GOTO waitAndExitSuccessful
+        GOTO :waitAndExitSuccessful
     )
 )
 ENDLOCAL
@@ -41,7 +41,7 @@ ECHO ---gitattributes file NOT YET configured
 REM Append the line to the .gitattributes file
 ECHO --Updating .gitattributes file
 ECHO %attrCmd% >> "%gitAttrFile%"
-GOTO waitAndExitSuccessful
+GOTO :waitAndExitSuccessful
 
 
 :waitAndExitSuccessful

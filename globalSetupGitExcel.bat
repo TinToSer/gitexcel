@@ -17,7 +17,7 @@ FOR %%p IN (
 )
 IF "%appVlpPath%"=="" (
     ECHO ---AppVLP.exe NOT FOUND in predefined paths
-    GOTO waitAndExitUnsuccessful
+    GOTO :waitAndExitUnsuccessful
 )
 SET appVlpPath="%appVlpPath%"
 ECHO ---Found: %appVlpPath%
@@ -33,7 +33,7 @@ FOR %%p IN (
 )
 IF "%spreadsheetComparePath%"=="" (
     ECHO ---SPREADSHEETCOMPARE.EXE NOT FOUND in predefined paths
-    GOTO waitAndExitUnsuccessful
+    GOTO :waitAndExitUnsuccessful
 )
 SET spreadsheetComparePath="%spreadsheetComparePath%"
 ECHO ---Found: %spreadsheetComparePath%
@@ -59,7 +59,7 @@ REM Replace paths in gitExcel.cmd
 ECHO --Updating %gitExcelPath%
 CALL :UpdateGitExcelFile %gitExcelPath%
 
-GOTO waitAndExitSuccessful
+GOTO :waitAndExitSuccessful
 
 
 REM Function returns the name if the file exists
@@ -73,29 +73,22 @@ REM Search for "SET appVlpPath/spreadsheetComparePath" and replace the lines wit
 :UpdateGitExcelFile
 SET filePath=%1
 SET tempFilePath="%cd%\temp.cmd"
-(
-    SETLOCAL EnableDelayedExpansion
-    FOR /F "tokens=1,* delims=]" %%i IN ('"type %filePath% | find /V /N """') DO (
-        SET "line=%%j"
-        ECHO !line! | FINDSTR /I /C:"SET appVlpPath=" >NUL
-        IF NOT ERRORLEVEL 1 (
-            ECHO SET appVlpPath=%appVlpPath%
-        ) ELSE (
-            ECHO !line! | FINDSTR /I /C:"SET spreadsheetComparePath=" >NUL
-            IF NOT ERRORLEVEL 1 (
-                ECHO SET spreadsheetComparePath=%spreadsheetComparePath%
-            ) ELSE (
-                REM Preserve empty lines
-                IF "%%j"=="" (
-                    ECHO.
-                ) ELSE (
-                    ECHO !line!
-                )
-            )
-        )
-    )
+
+SET "_findVlpPath=SET appVlpPath="
+SET "_findSscPath=SET spreadsheetComparePath="
+SET "_setVlpPath=SET appVlpPath=%appVlpPath%"
+SET "_setSscPath=SET spreadsheetComparePath=%spreadsheetComparePath%"
+
+(FOR /f "delims=" %%l IN ('findstr /n "^" %filePath%') DO (
+    SET "Line=%%l"
+    for /F "delims=:" %%n in ("%%l") do set "LNum=%%n"
+    SETLOCAL ENABLEDELAYEDEXPANSION
+    SET "Line=!Line:*:=!"
+    IF !Line! equ !_findVlpPath! SET "Line=!_setVlpPath!"
+    IF !Line! equ !_findSscPath! SET "Line=!_setSscPath!"
+    ECHO(!Line!
     ENDLOCAL
-) > %tempFilePath%
+))> %tempFilePath%
 MOVE /Y %tempFilePath% %filePath%
 GOTO :EOF
 

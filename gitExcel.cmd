@@ -7,22 +7,22 @@ SET appVlpPath="C:\Program Files\Microsoft Office\root\Client\AppVLP.exe"
 SET spreadsheetComparePath="C:\Program Files\Microsoft Office\root\vfs\ProgramFilesX86\Microsoft Office\Office16\DCF\SPREADSHEETCOMPARE.EXE"
 
 REM Check for TortoiseGit mode
-IF "%1"=="--tortoise" GOTO tortoiseGitMode
-IF "%1"=="-T" GOTO tortoiseGitMode
+IF "%1"=="--tortoise" GOTO :tortoiseGitMode
+IF "%1"=="-T" GOTO :tortoiseGitMode
 
 REM Standard git diff mode
 SET args=%*
 FOR /F "tokens=2 delims=," %%a IN ("%args%") DO SET filex=%%~a
-IF "%filex%" EQU "" GOTO shellMode
+IF "%filex%" EQU "" GOTO :shellMode
 FOR /F "tokens=1 delims=," %%a IN ("%args%") DO SET file1=%%~a
 SET file2=%filex%
-GOTO continue
+GOTO :continue
 
 :shellMode
 ECHO --Shell mode
 SET file1="%~5"
 SET file2="%~2"
-GOTO continue
+GOTO :continue
 
 REM Handle input from tortoiseGit
 :tortoiseGitMode
@@ -44,13 +44,13 @@ ECHO ---Found files
 
 
 ECHO --Creating temp file
-SET tmpfile="%temp%\compareExcelTemp.txt"
-DIR %file1:/=\% /B /S> %tmpfile%
-DIR %file2:/=\% /B /S>> %tmpfile%
+SET tempfile="%temp%\compareExcelTemp.txt"
+DIR %file1:/=\% /B /S> %tempfile%
+DIR %file2:/=\% /B /S>> %tempfile%
 
 
 ECHO --Starting SpreadsheetCompare--
-%appVlpPath% %spreadsheetComparePath% %tmpfile%
+%appVlpPath% %spreadsheetComparePath% %tempfile%
 timeout /t 5
 
 REM If it throws an error then increase the sleep time
