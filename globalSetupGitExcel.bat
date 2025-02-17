@@ -74,18 +74,18 @@ REM Search for "SET appVlpPath/spreadsheetComparePath" and replace the lines wit
 SET filePath=%1
 SET tempFilePath="%cd%\temp.cmd"
 
-SET "_findVlpPath=SET appVlpPath="
-SET "_findSscPath=SET spreadsheetComparePath="
-SET "_setVlpPath=SET appVlpPath=%appVlpPath%"
-SET "_setSscPath=SET spreadsheetComparePath=%spreadsheetComparePath%"
+SET "_findVlpVar=SET appVlpPath="
+SET "_findSscVar=SET spreadsheetComparePath="
+SET "_setVlpVar=SET appVlpPath=%appVlpPath%"
+SET "_setSscVar=SET spreadsheetComparePath=%spreadsheetComparePath%"
 
 (FOR /f "delims=" %%l IN ('findstr /n "^" %filePath%') DO (
     SET "Line=%%l"
     for /F "delims=:" %%n in ("%%l") do set "LNum=%%n"
     SETLOCAL ENABLEDELAYEDEXPANSION
     SET "Line=!Line:*:=!"
-    IF !Line! equ !_findVlpPath! SET "Line=!_setVlpPath!"
-    IF !Line! equ !_findSscPath! SET "Line=!_setSscPath!"
+    IF "!Line:~0,15!"=="%_findVlpVar%" SET "Line=!_setVlpVar!"
+    IF "!Line:~0,27!"=="%_findSscVar%" SET "Line=!_setSscVar!"
     ECHO(!Line!
     ENDLOCAL
 ))> %tempFilePath%
