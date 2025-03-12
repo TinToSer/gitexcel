@@ -1,14 +1,17 @@
-# gitexcel
-Compare Excel files with Git versioning using by default Microsoft SPREADSHEETCOMPARE tool
+# gitExcel
+Compare Excel files with Git versioning using the Microsoft SPREADSHEETCOMPARE tool.
 
-This simple batch script will help you to setup excel comparison using git diff commands
+Important: SpreadsheetCompare.exe is only available with Office Professional Plus 2013, Office Professional Plus 2016, Office Professional Plus 2019, or Microsoft 365 Apps for enterprise.
 
-It will help a lot to everyone using Excel files in git repository.
+The batch scripts will help you to setup excel comparison using git diff commands.
 
-To Do:-
-  1. Simply clone our repository
-  2. Run the "setupExcelCompareGit.bat" file by double clicking it, not as admin. Remember run it once only as it is system-wide setting
-  3. Run "gitExcelInject.bat" for each project you want the gitExcel to work as it modifies .gitattributes file
-  4. Open git console and type "git diff [Excel File Name]/hash hash", you will see SPREADSHEETCOMPARE tool opening with two excel files. I mean use git diff with its          standard syntax
+Setup
+  1. Clone or download gitExcel repository
+  2. Run the "globalSetupGitExcel.bat" file (not as admin). This only needs to be run once.
+  3. Run "repoSetupGitExcel.bat" for each project you want the gitExcel to work as it (creates and) modifies the .gitattributes file
+  4. Use git diff: Open git console and type "git diff [Excel File Name]/hash hash", you will see SPREADSHEETCOMPARE tool opening with two excel files.
+  5. For TortoiseGit:
+     - Settings > Diff Viewer > Advanced > .xlsx : "X:\Path\to\gitExcel.cmd" -T %mine %base
+     - Settings > Diff Viewer > Advanced > .xls : "X:\Path\to\gitExcel.cmd" -T %mine %base
 
-====================================Enjoy=================================================
+----------Enjoy----------
